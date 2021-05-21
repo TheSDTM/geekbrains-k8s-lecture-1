@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+        - name: mypod
+          image: yaroslavperf/gb-k8s-lecture-1:alpine
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1024Mi
+            requests:
+              cpu: "0.5"
+              memory: 512Mi
+          env:
+          - name: SOME_VARIABLE
+            value: "hello, world"

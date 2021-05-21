@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfigmap
+  namespace: test
+data:
+  some-number: "3"
+  config.yaml: |
+    app:
+      test: false
+      done: false
