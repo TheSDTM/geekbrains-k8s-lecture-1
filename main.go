@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net/http"
 	"os"
 )
@@ -45,30 +46,45 @@ func getConfig() string {
 	return string(data)
 }
 
-func checkDirExistence() bool {
-	if _, err := os.Stat("/data"); !os.IsNotExist(err) {
-		return true
+func writeToDataDir() {
+	randomFloat := rand.Float32()
+	data := fmt.Sprintf("%f\n\r", randomFloat)
+	ioutil.WriteFile("/data/data", []byte(data), 0777)
+}
+
+func readDataDir() string {
+	data, err := ioutil.ReadFile("/data/data")
+	if err != nil {
+		return "unknown"
 	}
-	return false
+	return string(data)
 }
 
 func main() {
+	writeToDataDir()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		hostname := getHostname()
 		appVersion := getAppVersion()
 		envName := getEnvName()
 		secret := getSecret()
-		dirExists := checkDirExistence()
+		dataDir := readDataDir()
 		config := getConfig()
 
 		output := `Hostname: %s
+-------------------------
 App version: %s
+-------------------------
 Environment Variable: %s
+-------------------------
 Secret: %s
-Persistent volume exists: %t
-Config content: %s
+-------------------------
+Persistent volume data:
+%s
+-------------------------
+Config content:
+%s
 		`
-		output = fmt.Sprintf(output, hostname, appVersion, envName, secret, dirExists, config)
+		output = fmt.Sprintf(output, hostname, appVersion, envName, secret, dataDir, config)
 		fmt.Fprint(w, output)
 	})
 	http.ListenAndServe(":80", nil)

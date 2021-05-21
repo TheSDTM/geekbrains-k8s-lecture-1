@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: mypod
-          image: yaroslavperf/gb-k8s-lecture-1:alpine
+          image: yaroslavperf/gb-k8s-lecture-1:1.0
           resources:
             limits:
               cpu: "1"
@@ -33,20 +33,16 @@ spec:
           - name: config
             mountPath: "/config"
             readOnly: true
-          - name: data
-            mountPath: "/data"
       volumes:
       - name: geekbrains
         secret:
           secretName: mysecret
           items:
           - key: username
+            path: username
       - name: config
         configMap:
           name: myconfigmap
           items:
           - key: config.yaml
-          - path: config.yaml
-      - name: data
-        persistentVolumeClaim:
-          claimName: myclaim
+            path: config.yaml
