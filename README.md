@@ -8,7 +8,8 @@
 Ниже приведен список команд, которые могут понадобиться во время лекции.
 
 ## Установка кластера
-minikube start --nodes 2 --vm=true
+minikube start --nodes 2 --vm=true  
+minikube addons enable ingress
 
 ## Удаление кластера
 minikube delete

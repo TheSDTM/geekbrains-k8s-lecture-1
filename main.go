@@ -46,6 +46,13 @@ func getConfig() string {
 	return string(data)
 }
 
+func checkDirExistence() bool {
+	if _, err := os.Stat("/data"); !os.IsNotExist(err) {
+		return true
+	}
+	return false
+}
+
 func writeToDataDir() {
 	randomFloat := rand.Float32()
 	data := fmt.Sprintf("%f\n\r", randomFloat)
@@ -61,6 +68,7 @@ func readDataDir() string {
 }
 
 func main() {
+	pvDetected := checkDirExistence()
 	writeToDataDir()
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		hostname := getHostname()
@@ -78,13 +86,13 @@ Environment Variable: %s
 -------------------------
 Secret: %s
 -------------------------
-Persistent volume data:
+Persistent volume data (persistence: %t):
 %s
 -------------------------
 Config content:
 %s
 		`
-		output = fmt.Sprintf(output, hostname, appVersion, envName, secret, dataDir, config)
+		output = fmt.Sprintf(output, hostname, appVersion, envName, secret, pvDetected, dataDir, config)
 		fmt.Fprint(w, output)
 	})
 	http.ListenAndServe(":80", nil)
