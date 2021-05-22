@@ -55,24 +55,24 @@ func (r *Result) Update() {
 
 func (r *Result) String() string {
 	output := `Hostname: %s
-	-------------------------
-	App version: %s
-	-------------------------
-	Environment Variable: %s
-	-------------------------
-	Secret: %s
-	-------------------------
-	Persistent volume data (persistence: %t):
-	%s
-	-------------------------
-	Config content:
-	%s
-	-------------------------
-	Redis: %s
-	-------------------------
-	RabbitMQ: %s
-	-------------------------
-	PostgreSQL: %s
+-------------------------
+App version: %s
+-------------------------
+Environment Variable: %s
+-------------------------
+Secret: %s
+-------------------------
+Persistent volume data (persistence: %t):
+%s
+-------------------------
+Config content:
+%s
+-------------------------
+Redis: %s
+-------------------------
+RabbitMQ: %s
+-------------------------
+PostgreSQL: %s
 		`
 	output = fmt.Sprintf(
 		output,

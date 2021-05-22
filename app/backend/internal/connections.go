@@ -34,10 +34,10 @@ func TestRabbitMQ() error {
 
 func TestPostgre() error {
 	db := pg.Connect(&pg.Options{
-		Addr:     os.Getenv("POSTGRE_ADDR"),
-		Database: os.Getenv("POSTGRE_DB"),
-		User:     os.Getenv("POSTGRE_USER"),
-		Password: os.Getenv("POSTGRE_PASSWORD"),
+		Addr:     os.Getenv("POSTGRES_HOST"),
+		Database: os.Getenv("POSTGRES_DB"),
+		User:     os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
 	})
 	defer db.Close()
 	_, err := db.Exec("SELECT 1=1")
