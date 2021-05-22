@@ -1,0 +1,32 @@
+
+body {
+    padding: 10%;
+    padding-top: 2%;
+    background-color: rgb(139, 83, 255);
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-column {
+    background-color: whitesmoke;
+    margin: 2%;
+    padding: 2%;
+    margin-top: 0;
+    padding-top: 1%;
+    width: 42%;
+}
+
+.info {
+    width: 92% !important;
+}
+
+.offline {
+    color: brown;
+}
+
+.online {
+    color: seagreen;
+}
