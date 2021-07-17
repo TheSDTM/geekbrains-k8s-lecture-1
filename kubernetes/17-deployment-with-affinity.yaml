@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - myapp
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: mypod
+          image: yaroslavperf/gb-k8s-lecture-1:1.0
+          resources:
+            limits:
+              cpu: "1"
+              memory: 1024Mi
+            requests:
+              cpu: "0.5"
+              memory: 512Mi
+          env:
+          - name: SOME_VARIABLE
+            value: "hello, world"
+          - name: POSTGRES_HOST
+            value: myservice-db.test.svc.cluster.local:5432
+          - name: POSTGRES_USER
+            value: api
+          - name: POSTGRES_PASSWORD
+            value: api
+          - name: POSTGRES_DB
+            value: db
+          livenessProbe:
+            httpGet:
+              path: /api
+              port: 80
+              httpHeaders:
+              - name: Authorization
+                value: abc123
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 7
+          volumeMounts:
+          - name: geekbrains
+            mountPath: "/etc/geekbrains"
+            readOnly: true
+          - name: config
+            mountPath: "/config"
+            readOnly: true
+          - name: data
+            mountPath: "/data"
+      volumes:
+      - name: geekbrains
+        secret:
+          secretName: mysecret
+          items:
+          - key: username
+            path: username
+      - name: config
+        configMap:
+          name: myconfigmap
+          items:
+          - key: config.yaml
+            path: config.yaml
+      - name: data
+        persistentVolumeClaim:
+          claimName: myclaim

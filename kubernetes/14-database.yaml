@@ -37,9 +37,9 @@ metadata:
   name: myservice-db
   namespace: test
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    app:mydb
+    app: mydb
   ports:
     - protocol: TCP
       port: 5432
