@@ -6,7 +6,7 @@
 # Что нужно выполнить до начала первой лекции
 1. установить [kubectl](https://kubernetes.io/ru/docs/tasks/tools/install-kubectl/) для работы с кластером через командную строку
 2. установить [Kubenav](https://github.com/kubenav/kubenav/releases) для работы с кластером через GUI
-3. установить [minikube удобным способом](https://kubernetes.io/ru/docs/tasks/tools/install-minikube/)
+3. установить [minikube удобным способом](https://kubernetes.io/ru/docs/tasks/tools/install-minikube/). ВНИМАНИЕ! Если у вас Windows, то не используйте связку WLS (Windows  Linux Subsystem) и Docker, так как это приведет к проблемам в в работе Kubernetes. Рекомендуется использовать HyperKit.
 4. создать новый кластер (см. команды ниже в разделе "полезные команды")
 5. установить ingress controller (см. команды ниже в разделе "полезные команды")
 6. убедиться в работоспособности кластера командой `kubectl get ns`
