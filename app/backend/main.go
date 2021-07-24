@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/TheSDTM/geekbrains-k8s-lecture-1/app/backend/internal"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var pvDetected = false
@@ -111,5 +112,6 @@ func main() {
 	internal.WriteToDataDir()
 	http.HandleFunc("/", handleRawPage)
 	http.HandleFunc("/api", handleApiPage)
+	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(":80", nil)
 }

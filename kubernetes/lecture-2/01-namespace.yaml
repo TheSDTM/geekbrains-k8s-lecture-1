@@ -1,0 +1,13 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: prometheus
+  labels:
+    env: prod
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: test-2
+  labels:
+    env: prod

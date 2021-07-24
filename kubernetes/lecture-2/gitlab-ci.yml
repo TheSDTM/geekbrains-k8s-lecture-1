@@ -1,0 +1,55 @@
+image: golang:1.15
+
+stages:
+  - test
+  - build
+  - build-docker
+  - deploy
+
+test:unit:
+  stage: test
+  before_script:
+  - ls
+  script:
+    - make test
+
+build:app:
+  stage: build
+  artifacts:
+    untracked: true
+  script:
+    - CGO_ENABLED=0 make
+
+build-docker:app:
+  stage: build-docker
+  image:
+    name: gcr.io/kaniko-project/executor:v1.5.1-debug
+    entrypoint: [""]
+  needs:
+    - job: build:app
+      artifacts: true
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"auth\":\"$(echo -n ${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD} | base64)\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY/$CI_REGISTRY_IMAGE:$CI_PIPELINE_IID
+  only:
+    refs:
+      - master
+    variables:
+      - $CI_PIPELINE_IID
+
+deploy:app:
+  stage: deploy
+  image: lwolf/helm-kubectl-docker:v1.11.8-v2.13.0
+  needs: ["build-docker:app"]
+  before_script:
+    - mkdir -p ~/.kube
+    - echo ${CI_KUBE_CONFIG} | base64 -d > ~/.kube/config
+    - kubectl config use-context ${CI_KUBE_CONTEXT}
+  script:
+    - kubectl set image deployment/mydeployment api=$CI_REGISTRY/$CI_REGISTRY_IMAGE:$CI_PIPELINE_IID --record -n=$CI_STAGING_NAMESPACE
+  only:
+    refs:
+      - master
+    variables:
+      - $CI_PIPELINE_IID

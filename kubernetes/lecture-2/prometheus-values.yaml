@@ -1,0 +1,57 @@
+prometheusOperator:
+  serviceMonitor:
+    selfMonitor: false
+
+alertmanager:
+  enabled: false
+
+prometheus:
+  service:
+    type: NodePort
+    labels:
+      prometheus: prometheus-operator-kube-p-prometheus
+  servicePerReplica:
+    type: NodePort
+  prometheusSpec:
+    replicas: 1
+
+    serviceMonitorNamespaceSelector: {}
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+grafana:
+  service:
+    type: NodePort
+  adminPassword: admin123
+  serviceMonitor:
+    selfMonitor: false
+
+coreDns:
+  enabled: false
+
+defaultRules:
+  create: false
+
+kubelet:
+  enabled: false
+
+nodeExporter:
+  enabled: true
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
+
+kubeEtcd:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: false
+
+kubeControllerManager:
+  enabled: false
+
+kubeApiServer:
+  enabled: false

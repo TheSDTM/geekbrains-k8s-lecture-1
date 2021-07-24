@@ -3,14 +3,18 @@
 
 В папке Kubernetes находятся все конфигурационные файлы, которые используются во время лекции.
 
-# Что нужно выполнить до начала лекции
+# Что нужно выполнить до начала первой лекции
 1. установить [kubectl](https://kubernetes.io/ru/docs/tasks/tools/install-kubectl/) для работы с кластером через командную строку
 2. установить [Kubenav](https://github.com/kubenav/kubenav/releases) для работы с кластером через GUI
 3. установить [minikube удобным способом](https://kubernetes.io/ru/docs/tasks/tools/install-minikube/)
 4. создать новый кластер (см. команды ниже в разделе "полезные команды")
-5. убедиться в работоспособности кластера командой `kubectl get ns`
-6. клонировать этот репозиторий себе на компьютер
-7. ознакомиться с файлом README.md
+5. установить ingress controller (см. команды ниже в разделе "полезные команды")
+6. убедиться в работоспособности кластера командой `kubectl get ns`
+7. клонировать этот репозиторий себе на компьютер
+8. ознакомиться с файлом README.md
+
+# Что нужно выполнить до начала второй лекции
+1. установить [helm](https://helm.sh/) для работы с чартами (пакетами)
 
 # Домашнее задание
 ## Описание задачи
@@ -139,3 +143,12 @@ minikube service myservice -n test
 
 ## Получить IP-адрес Ingress
 kubectl get ingress -n test
+
+## Установка cert manager
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.0/cert-manager.yaml
+
+## Установка Prometheus Operator
+kubectl create ns prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install prometheus-operator prometheus-community/kube-prometheus-stack -n test-2 --values=prometheus-values.yaml
