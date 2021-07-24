@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: mycert
+spec:
+  secretName: certificate-secret-name
+  dnsNames:
+  - foo.example.com
+  - bar.example.com
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
