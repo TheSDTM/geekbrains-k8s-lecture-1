@@ -148,7 +148,8 @@ kubectl get ingress -n test
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.4.0/cert-manager.yaml
 
 ## Установка Prometheus Operator
-kubectl create ns prometheus
+```
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install prometheus-operator prometheus-community/kube-prometheus-stack -n test-2 --values=prometheus-values.yaml
+```
